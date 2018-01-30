@@ -1,0 +1,47 @@
+.top{
+    margin-bottom: 12px;
+}
+.main{}
+.city-wrap{
+    /* background: #fff; */
+    margin-bottom: 12px;
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+}
+.content-title{
+    padding: 8px;
+    border-bottom: 1px solid #e4e4e4;
+}
+.content{}
+.row{
+    overflow: hidden;
+}
+.col-xs-3{
+    width: 25%;
+    float: left;
+    text-align: center;
+    border-right:solid 1px #e4e4e4;
+    border-bottom:solid 1px #e4e4e4;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+    -webkit-box-sizing:border-box; /* Safari */
+    line-height: 0.4rem;
+}
+.city-group-one{
+    background: #fff;
+    margin-bottom: 12px;
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    overflow: hidden;
+}
+.city-hot{
+    background: #fff;
+    margin-bottom: 12px;
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+    overflow: hidden;
+}
+.city-group a{
+    color:#666;
+}
+
