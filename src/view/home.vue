@@ -72,16 +72,25 @@
             </div>
           </div>
         </div >
-        <p class="fz14 grey p15 tac" v-show="loading">
-          <i class="fa fa-question-circle"></i>  <span>加载更多</span>
+        <!--<p class="fz14 grey p15 tac" v-show="busy">-->
+        <p class="fz14 grey p15 tac">
+          <i class="fa fa-refresh"></i>  <span>加载中</span>
+        </p>
+        <p class="fz14 grey p15 tac" v-show="isOver">
+          <span>已经到底了</span>
         </p>
       </div>
+    </div>
+    <div class="toastBox toastAnimate" v-show="msg">
+      <div class="toast" >{{msg}}</div>
     </div>
     <footerBox :isActive="isActive"></footerBox>
   </div>
 </template>
 
 <script>
+  import  Swiper from "../plugins/swiper/js/idangerous.swiper.min"
+  import  "../plugins/swiper/css/idangerous.swiper.css"
   import footerBox from "../components/footer.vue"
 export default {
   name: 'app',
@@ -90,12 +99,16 @@ export default {
       isActive: 'home',
       dataBanner:"",
       filteredItems:"",
-      restaurants:"",
+      restaurants:[],
       imgLoading:true,
       positionY:0,
       toTopIcon:false,
       rating:[],
-      loading:true
+      loading:true,
+      busy:false,
+      offset:0,
+      msg:"",
+      isOVer:false
     }
   },
   components:{
@@ -136,9 +149,65 @@ export default {
       else{
         return false;
       }
+    },
+    loadMore:function(){
+          this.offset++;
+          this.busy = true;
+          var _this=this;
+          this.$http.get(baseUrl+"/shopping/restaurants",{
+            params:{
+              latitude:_this.geohash[0],
+              longitude:_this.geohash[1],
+              offset:_this.offset,
+              limit:10,
+              extras:"activities",
+              keyword:"",
+              restaurant_category_id:"",
+              restaurant_category_ids:"",
+              order_by:"",
+              delivery_mode:""
+            }
+          }).then(function(result){
+              if(result.data.length==0){
+                  _this.isOVer=true;
+                    return
+              }
+            _this.restaurants=_this.restaurants.concat(result.data);
+            console.log(_this.restaurants);
+            _this.busy=false;
+            _this.msg="加载成功";
+            setTimeout(function(){
+                _this.msg="";
+            },2000)
+          }).catch(function(error){
+            console.log(error);
+            _this.msg=error;
+            setTimeout(function(){
+              _this.msg="";
+            },2000)
+          })
+    },
+    getBannerData:function(){
+      var _this=this;
+      this.$http.get("https://easy-mock.com/mock/5a6ee6924c02fb3139acf189/searchContent_copy/group-type").then(function(result){
+        _this.loading=true;
+        _this.dataBanner=result.data;
+        var arr=[];
+        var len=Math.ceil(_this.dataBanner.length/4);
+        for(var i=0;i<len;i++){
+          arr.push(_this.dataBanner.slice(4*i, 4*(i+1)));
+        }
+        _this.filteredItems=arr;
+        _this.loading=false;
+      }).catch(function(error){
+        console.log(error);
+      })
     }
   },
   computed:{
+      geohash:function(){
+        return this.$route.query.geohash.split(",")
+      },
     login:function(){
       var userId=localStorage.getItem("userId");
       if(userId!="" && userId!=undefined){
@@ -150,53 +219,114 @@ export default {
     }
   },
   created:function(){
+    this.getBannerData();
+    this.loadMore();
+
     var _this=this;
-    this.$http.get("https://easy-mock.com/mock/5a6ee6924c02fb3139acf189/searchContent_copy/group-type").then(function(result){
-        _this.loading=true;
-      _this.dataBanner=result.data;
-      var arr=[];
-      var len=Math.ceil(_this.dataBanner.length/4);
-      for(var i=0;i<len;i++){
-        arr.push(_this.dataBanner.slice(4*i, 4*(i+1)));
-      }
-      _this.filteredItems=arr;
-      _this.loading=false;
-    }).catch(function(error){
-        console.log(error);
-    })
+    window.addEventListener("scroll", function(e){
+      var ele=document.documentElement;
+      var a=ele.scrollHeight-ele.clientHeight-ele.scrollTop;
 
-    this.$http.get("https://easy-mock.com/mock/5a6ee6924c02fb3139acf189/searchContent_copy/restaurants").then(function(result){
-      _this.restaurants=result.data;
-    }).catch(function(error){
-        console.log(error);
-    })
-
-    window.onscroll = function() {
-      if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+      if (ele.scrollTop>20) {
         _this.toTopIcon=true;
       } else {
         _this.toTopIcon=false;
       }
-    };
+
+      if (a<= 5) {
+        if (!_this.busy) {
+          _this.loadMore();
+        }
+      }
+    });
   },
   beforeCreate:function(){
-    var _this=this;
-    var i=0;
-    var timer=setInterval(function(){
-      if(i>5){
-        i--;
-      }
-      else{
-        i++;
-      }
-      _this.positionY=-70*i+"px";
-    },1000);
-    setTimeout(function(){
-      _this.imgLoading=false;
-    },3000);
   }
 }
+
+  var mySwiper=new Swiper(".swiper-container",{
+    loop:true,
+    pagination:".pagination"
+    // autoplay:2000,   //每2s钟自动轮播
+  })
+
 </script>
 <style>
   @import "../style/home.css";
+  @import "../plugins/swiper/css/idangerous.swiper.css";
+  .fa-refresh{
+      animation:roading 1s infinite linear;
+  }
+  @keyframes roading{
+    0%{
+      transform:rotate(0deg)
+    }
+    100%{
+      transform:rotate(360deg)
+    }
+  }
+  .toast{
+    background: #fff;
+    border:1px solid #ddd;
+    padding: 5px 10px;
+    border-radius: 10px;
+    bottom:120px;
+    display: inline-block;
+    font-size: 14px;
+  }
+  .toastBox{
+    position: fixed;
+    margin:auto;
+    left: 0;
+    right: 0;
+    bottom:0;
+    text-align: center;
+  }
+  .toastAnimate{
+    bottom:100px;
+    animation:toast 2s;
+  }
+  @keyframes toast {
+    0%{
+      bottom:0;
+    }
+    20%{
+      bottom:100px;
+    }
+    80%{
+      bottom:100px;
+    }
+    100%{
+      bottom:0;
+    }
+  }
+
+  .swiper-container{
+    max-height:250px;
+    height: 250px;
+  }
+  .swiper-slide{
+    text-align: center;
+  }
+  .pagination{
+    position: absolute;
+    z-index: 20;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
+  .swiper-pagination-switch{
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-right: 8px;
+    background: #555;
+    margin: 0 5px;
+    opacity: 0.8;
+    border: 1px solid #fff;
+    cursor:pointer;
+  }
+  .swiper-active-switch{
+    background: #fff;
+  }
 </style>

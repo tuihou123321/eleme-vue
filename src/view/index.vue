@@ -23,7 +23,7 @@
         </div>
         <div class="content" v-cloak>
           <template  v-for="(item,index) in cityHot" >
-            <router-link  :to='"/city/"+item.pinyin' data-area_code="item.area_code" @click="city(item)" class="col-xs-3 c-active">{{item.name}} </router-link>
+            <router-link  :to='"/city/"+item.id' data-area_code="item.area_code" @click="city(item)" class="col-xs-3 c-active">{{item.name}} </router-link>
           </template>
         </div>
       </div>
@@ -70,23 +70,29 @@
     },
     created:function(){
       var _this=this;
-      this.$http.get(baseUrl+'/v1/cities?type=hot',{
+      this.$http.get(baseUrl+'/v1/cities',{
+          params:{
+              type:"hot"
+          }
       }).then(function(res){
           _this.cityHot=res.data;
       },function(res){
         console.log(res.status);
       })
 
-//    this.$http.get('http://cangdu.org:8001/v1/cities?type=group',{
-//    }).then(function(res){
-//      var a=res.data;
-//      for(var i=0;i<_this.softRule.length;i++){
-//        var one=a[_this.softRule[i]];
-//        _this.cityGroup.push(one);
-//      }
-//    },function(){
-//      console.log("请求失败");
-//    })
+    this.$http.get(baseUrl+'/v1/cities',{
+        params:{
+            type:"group"
+        }
+    }).then(function(res){
+      var a=res.data;
+      for(var i=0;i<_this.softRule.length;i++){
+        var one=a[_this.softRule[i]];
+        _this.cityGroup.push(one);
+      }
+    },function(){
+      console.log("请求失败");
+    })
 
     }
   }

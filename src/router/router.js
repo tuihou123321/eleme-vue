@@ -26,6 +26,7 @@ import setUsername from "../view/setUsername.vue"
 import useCart from "../view/useCart.vue"
 import vipcard from "../view/vipcard.vue"
 import vipDescription from "../view/vipDescription.vue"
+import swiperTest from "../view/swiper-test.vue"
 
 
 
@@ -111,6 +112,10 @@ var router=new Router({
       {
         path:"/vipDescription",
         component:vipDescription
+      },
+      {
+        path:"/swiperTest",
+        component:swiperTest
       },
         {
           path:"/home",
