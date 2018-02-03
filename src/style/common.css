@@ -504,3 +504,22 @@ btn.active, .btn:active {
     0% { left: 0.26rem; }
     100% {left: 0; }
 }
+.row{
+  overflow: hidden;
+}
+.col-xs-3 {
+  float: left;
+  width: 25%;
+}
+.col-xs-4{
+  float: left;
+  width: 33.333%;
+}
+.col-xs-6{
+  float: left;
+  width: 50%;
+}
+.col-xs-12{
+  float: left;
+  width: 100%;
+}

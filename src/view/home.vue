@@ -4,29 +4,33 @@
       <div class="img-loading" v-show="imgLoading" :style="{backgroundPositionY:positionY}"></div>
       <header class="header">
         <router-link to="/search/" class="header-left"><i aria-hidden="true" class="fa fa-search"></i></router-link>
-        <router-link to="/index/" class="header-center ellipsis" style="width: 180px;">南山科技园金融基地大厦</router-link>
+        <router-link to="/" class="header-center ellipsis" style="width: 180px;">南山科技园金融基地大厦</router-link>
         <router-link to="/profile/" class="header-right fr" v-if="login"><i aria-hidden="true" class="fa fa-user-o"></i></router-link>
         <router-link to="/login/" class="header-right fr fz14" v-else>登录/注册</router-link>
       </header>
+
       <div class="goTop fz50 grey fix op8" style="right:30px;bottom:70px;" @click="goTop()" v-show="toTopIcon">
         <i  class="fa fa-arrow-circle-o-up"></i>
       </div>
-      <div class="banner bdb1" v-cloak>
-        <div class="swiper-wrapper">
-          <div class="bannerOne" v-for="(item,index) in filteredItems">
-            <a href="javascript:"  v-for="(item2,index2) in item">
-              <figure>
-                <img :src='"https://fuss10.elemecdn.com/"+item2.image_url' alt="">
-                <figcaption>{{item2.title}}</figcaption>
-              </figure>
-            </a>
+
+      <div class="banner bdb1" style="padding-top: 50px;">
+        <div class="swiper-container">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide" v-for="item in filteredItems">
+                <div class="row">
+                  <a href="javascript:" class="col-xs-3"  v-for="item2 in item">
+                    <img :src='"https://fuss10.elemecdn.com/"+item2.image_url' alt="">
+                    <figcaption>{{item2.title}}</figcaption>
+                  </a>
+                </div>
+            </div>
+
           </div>
-        </div>
-        <div class="swiper-pagination">
-          <span class="swiper-bot"></span>
-          <span class="swiper-bot swiper-active"></span>
+          <div class="pagination"></div>
         </div>
       </div>
+
       <div class="container">
         <h5 class="title">
           <i class="fa fa-university"></i>
@@ -76,7 +80,7 @@
         <p class="fz14 grey p15 tac">
           <i class="fa fa-refresh"></i>  <span>加载中</span>
         </p>
-        <p class="fz14 grey p15 tac" v-show="isOver">
+        <p class="fz14 grey p15 tac" v-show="isover">
           <span>已经到底了</span>
         </p>
       </div>
@@ -89,17 +93,16 @@
 </template>
 
 <script>
-  import  Swiper from "../plugins/swiper/js/idangerous.swiper.min"
-  import  "../plugins/swiper/css/idangerous.swiper.css"
-  import footerBox from "../components/footer.vue"
+import  Swiper from "../plugins/swiper/js/idangerous.swiper.min"
+import footerBox from "../components/footer.vue"
 export default {
   name: 'app',
   data () {
     return {
       isActive: 'home',
       dataBanner:"",
-      filteredItems:"",
       restaurants:[],
+      filteredItems:"",
       imgLoading:true,
       positionY:0,
       toTopIcon:false,
@@ -108,7 +111,8 @@ export default {
       busy:false,
       offset:0,
       msg:"",
-      isOVer:false
+      filtData:"",
+      isover:false
     }
   },
   components:{
@@ -119,6 +123,7 @@ export default {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
     },
+    //评分
     starFun:function(item,index){
       var num=item.rating+"";
       var a;
@@ -141,7 +146,6 @@ export default {
       return a*1;
     },
     footActive:function(value){
-      console.log(value);
       var url=location.href;
       if(url.indexOf(value)>0){
         return true;
@@ -169,11 +173,11 @@ export default {
             }
           }).then(function(result){
               if(result.data.length==0){
-                  _this.isOVer=true;
+                  _this.isover=true;
                     return
               }
             _this.restaurants=_this.restaurants.concat(result.data);
-            console.log(_this.restaurants);
+//            console.log(_this.restaurants);
             _this.busy=false;
             _this.msg="加载成功";
             setTimeout(function(){
@@ -187,26 +191,36 @@ export default {
             },2000)
           })
     },
-    getBannerData:function(){
+    filterFun:function(){
       var _this=this;
+      var filteredItems=[];
+      //axios使用promise异步特性then,按同步方式执行，解决异步的一个好方法；
       this.$http.get("https://easy-mock.com/mock/5a6ee6924c02fb3139acf189/searchContent_copy/group-type").then(function(result){
-        _this.loading=true;
-        _this.dataBanner=result.data;
-        var arr=[];
-        var len=Math.ceil(_this.dataBanner.length/4);
-        for(var i=0;i<len;i++){
-          arr.push(_this.dataBanner.slice(4*i, 4*(i+1)));
+        var len = Math.ceil(result.data.length/8);
+        for (var i=0;i<len;i++){
+          filteredItems[i] = result.data.splice(0,8);  //0-8,8-16
         }
-        _this.filteredItems=arr;
-        _this.loading=false;
+        _this.filteredItems=filteredItems;
+      }).then(function(){
+        new Swiper(".swiper-container", {
+          loop: true,
+          pagination: ".pagination"
+        })
       }).catch(function(error){
-        console.log(error);
       })
     }
   },
   computed:{
       geohash:function(){
-        return this.$route.query.geohash.split(",")
+          if(this.$route.query.geohash){
+            var arr=this.$route.query.geohash.split(",");
+            this.$store.commit("changeGeohash",arr);
+            return arr
+          }
+          else{
+            //如果没有传地区IP过来，就调用默认的IP
+            return this.$store.state.geohash;
+          }
       },
     login:function(){
       var userId=localStorage.getItem("userId");
@@ -219,9 +233,7 @@ export default {
     }
   },
   created:function(){
-    this.getBannerData();
     this.loadMore();
-
     var _this=this;
     window.addEventListener("scroll", function(e){
       var ele=document.documentElement;
@@ -241,14 +253,16 @@ export default {
     });
   },
   beforeCreate:function(){
+  },
+  mounted:function(){
+      this.filterFun();
+  },
+  updated:function(){
+//    this.funA();  //使用updated会产生很多相同的轮播列
   }
 }
 
-  var mySwiper=new Swiper(".swiper-container",{
-    loop:true,
-    pagination:".pagination"
-    // autoplay:2000,   //每2s钟自动轮播
-  })
+
 
 </script>
 <style>
@@ -300,11 +314,10 @@ export default {
       bottom:0;
     }
   }
+.banner{
+  height: 180px !important;
+}
 
-  .swiper-container{
-    max-height:250px;
-    height: 250px;
-  }
   .swiper-slide{
     text-align: center;
   }
@@ -314,6 +327,7 @@ export default {
     bottom: 10px;
     width: 100%;
     text-align: center;
+    top: 150px;
   }
   .swiper-pagination-switch{
     display: inline-block;
@@ -327,6 +341,6 @@ export default {
     cursor:pointer;
   }
   .swiper-active-switch{
-    background: #fff;
+    background: #3190e8;
   }
 </style>

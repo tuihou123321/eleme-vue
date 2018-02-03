@@ -25,17 +25,18 @@ export default {
   },
   methods:{
   },
-  created:function(){
+  created:function() {
   },
-  beforeCreate:function(){
-  }
+  mounted:function(){
+    new Swiper(".swiper-container", {
+      loop: true,
+      pagination: ".pagination"
+      // autoplay:2000,   //每2s钟自动轮播
+    })
+   },
 }
 
- new Swiper(".swiper-container",{
-    loop:true,
-    pagination:".pagination"
-    // autoplay:2000,   //每2s钟自动轮播
-  })
+
 
 </script>
 <style>

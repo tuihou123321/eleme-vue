@@ -8,10 +8,15 @@ Vue.use(Vuex);
 
 var store=new Vuex.Store({
   state:{
-    msg:"hello world"
+    msg:"hello world",
+    geohash:[31.22709,121.48097]
   },
   getters:{},
-  mutations:{},
+  mutations:{
+    changeGeohash:function(state,data){
+        state.geohash=state;
+    }
+  },
   actions:{}
 })
 

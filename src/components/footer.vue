@@ -1,6 +1,7 @@
 <template>
   <div>
     <footer class="footer-menu df tac">
+      <!--<router-link to="{path:'/home',query:{geohash:100}}" class="fx1">-->
       <router-link to="/home" class="fx1">
         <i class="fa fa-shopping-basket" :class="{'c-active':isActive=='home'}"></i>
         <span>外卖</span>
@@ -25,10 +26,16 @@
 </template>
 
 <script>
+  import {mapState} from "vuex"
 export default {
   name: 'app',
   data () {
     return {
+    }
+  },
+  computed:{
+    search:function(){
+        return 200;
     }
   },
   props:["isActive"]

@@ -125,11 +125,10 @@
       get:function(){
         console.log(89);
         var _this=this;
-        console.log(baseUrl);
         this.$http.get(baseUrl+"/v4/restaurants",{
             params:{
               keyword:_this.keyword,   //关键字
-              geohash:"22.53619,114.02608",   //城市
+              geohash:_this.geohash.join(),   //城市
               //extras[]:"restaurant_activity",  //限制条数
               type:"search" //
             }
@@ -138,6 +137,19 @@
         },function(res){
           console.log(res);
         });
+      }
+    },
+    computed:{
+      geohash:function(){
+        if(this.$route.query.geohash){
+          var arr=this.$route.query.geohash.split(",");
+          this.$store.commit("changeGeohash",arr);
+          return arr
+        }
+        else{
+          //如果没有传地区IP过来，就调用默认的IP
+          return this.$store.state.geohash;
+        }
       }
     },
     created:function(){
