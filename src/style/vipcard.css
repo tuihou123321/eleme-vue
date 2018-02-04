@@ -1,0 +1,23 @@
+.btn-orange{
+    border-color:#ff9a0d;
+    color:#ff9a0d;
+    padding: 3px 12px;
+}
+.btn-orange:hover:active{
+    background: #ff9a0d;
+    color:#fff;
+    border: #ff9a0d;
+}
+.btn-orange:hover{
+    border-color:#ff9a0d;
+    color:#ff9a0d;
+    padding: 3px 12px;
+    background: transparent;
+}
+
+/*.btn-orange:active{*/
+    /*background: transparent;*/
+    /*border-color:#ff9a0d;*/
+    /*color:#ff9a0d;*/
+    /*padding: 3px 12px;*/
+/*}*/

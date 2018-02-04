@@ -1,0 +1,71 @@
+[
+  {
+    "id":7160761341773,
+    "sn":"201705211244186655961161757573",
+    "user_id":186655961,
+    "amount":2,
+    "sum_condition":40,
+    "name":"分享红包",
+    "phone":"13681711254",
+    "begin_date":"2017-05-21",
+    "end_date":"2017-05-23",
+    "status":0,
+    "present_status":1,
+    "share_status":0,
+    "description_map":{
+      "phone":"限收货手机号为 13681711254",
+      "online_paid_only":"限在线支付使用",
+      "validity_delta":"剩3日",
+      "validity_periods":"2017-05-23到期",
+      "sum_condition":"满 40 元可用"
+    },
+    "__v":0
+  },
+  {
+    "id":7160771283789,
+    "sn":"201705211244186655961313417766",
+    "user_id":186655961,
+    "amount":1,
+    "sum_condition":20,
+    "name":"分享红包",
+    "phone":"13681711254",
+    "begin_date":"2017-05-21",
+    "end_date":"2017-05-23",
+    "status":0,
+    "present_status":1,
+    "share_status":0,
+    "description_map":{
+      "phone":"限收货手机号为 13681711254",
+      "online_paid_only":"限在线支付使用",
+      "validity_delta":"剩3日",
+      "validity_periods":"2017-05-23到期",
+      "sum_condition":"满 20 元可用"
+    },
+    "__v":0
+  },
+  {
+    "id":7160754582349,
+    "sn":"201705211243186655961753696656",
+    "user_id":186655961,
+    "amount":4.5,
+    "sum_condition":30,
+    "name":"分享红包",
+    "phone":"13681711254",
+    "begin_date":"2017-05-21",
+    "end_date":"2017-05-23",
+    "limit_map":{
+      "restaurant_flavor_ids":"限品类：快餐便当、特色菜系、小吃夜宵、甜品饮品、异国料理"
+    },
+    "status":0,
+    "present_status":1,
+    "share_status":0,
+    "description_map":{
+      "phone":"限收货手机号为 13681711254",
+      "online_paid_only":"限在线支付使用",
+      "validity_delta":"剩3日",
+      "validity_periods":"2017-05-23到期",
+      "sum_condition":"满 30 元可用"
+    },
+    "__v":0
+  }
+]

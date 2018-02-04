@@ -1,0 +1,34 @@
+.top{
+    background: white;
+    /*width: 100%;*/
+    margin-top: 50px;
+    padding: 0.1rem 0.15rem;
+}
+input[type="search"]{
+    border: 1px solid #e4e4e4;
+    padding: 7px;
+    width: 100%;
+    border-radius: 3px;
+    font-size: 0.14rem;
+}
+.history{
+    font-size: 0.1rem;
+    padding:0.05rem 0.12rem;
+}
+.content-search{
+    background: #fff;
+}
+.content-search li{
+    padding: 0.12rem 0.15rem;
+    border-bottom: 1px solid #e4e4e4;
+}
+.clearBox{
+    padding: 0.12rem;
+    background: #fff;
+    text-align: center;
+    font-size: 0.16rem;
+}
+.address-title{
+    font-weight: 500;
+    color:#333;
+}
