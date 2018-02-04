@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <header class="header">
       <a href="javascript:history.back()" class="header-left"><i aria-hidden="true" class="fa fa-chevron-left"></i></a>
       <div class="header-center">{{title}}</div>

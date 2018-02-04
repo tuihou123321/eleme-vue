@@ -4,7 +4,7 @@
     <div class="main mt40" v-cloak>
       <div class="box p10" style="background:#3190e8;">
         <div class="bg-white bdrs5 p10">
-          <div>当前积分<a href="detail.html" class="c-active fr"> <i class="fa fa-question-circle mr5 fz16"></i>积分说明</a></div>
+          <div>当前积分<router-link to="detail" class="c-active fr"> <i class="fa fa-question-circle mr5 fz16"></i>积分说明</router-link></div>
           <div class="mt10">
             <span class="fz40 b green">0</span> <span class="fz16">元</span>
           </div>

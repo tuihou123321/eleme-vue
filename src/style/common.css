@@ -146,6 +146,14 @@ input { border: none; outline: none; }
 .bg-green { background: #6ac20b; }
 .bg-active { background: #3190e8; }
 .bg-tp{    background: transparent;}
+.c3{
+  color: #333;}
+.c6{
+  color: #666;
+}
+.c9{
+  color: #999;
+}
 
 /*文本对齐 center,right*/
 .tac { text-align: center;}

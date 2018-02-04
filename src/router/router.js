@@ -27,6 +27,9 @@ import useCart from "../view/useCart.vue"
 import vipcard from "../view/vipcard.vue"
 import vipDescription from "../view/vipDescription.vue"
 import swiperTest from "../view/swiper-test.vue"
+import balance from "../view/balance.vue"
+import detail from "../view/balanceDetail.vue"
+import integralDetail from "../view/integralDetail.vue"
 
 
 
@@ -78,6 +81,10 @@ var router=new Router({
         component:integral
       },
       {
+        path:"/integral/Detail",
+        component:integralDetail
+      },
+      {
         path:"/invoiceRecord",
         component:invoiceRecord
       },
@@ -116,6 +123,14 @@ var router=new Router({
       {
         path:"/swiperTest",
         component:swiperTest
+      },
+      {
+        path:"/balance",
+        component:balance
+      },
+      {
+        path:"/balance/detail",
+        component:detail
       },
         {
           path:"/home",

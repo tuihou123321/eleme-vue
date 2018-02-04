@@ -111,17 +111,19 @@
           this.exit();
         }
         else{
+          var _this=this;
           this.$http.get("https://easy-mock.com/mock/5a6ee6924c02fb3139acf189/searchContent_copy/user",
             {
                 params:{
-                    "account":this.account,"password":this.password,"checkCode":this.checkCode
+                    "account":_this.account,
+                     "password":_this.password,
+                     "checkCode":_this.checkCode
                 }
             }).then(function(result){
             if(result){
-//            console.log(result.user_id);
+              result=result.data;
               localStorage.setItem("userId",result.user_id);
-              history.back();
-//            location.href="profile.html";
+              _this.$router.push("/profile");
             }
           }).catch(function(err){
               console.log(err);

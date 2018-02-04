@@ -8,6 +8,7 @@ Vue.prototype.$http=Axios
 Vue.use(infiniteScroll)
 
 
+
 new Vue({
   el: '#app',
   router,

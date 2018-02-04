@@ -2,7 +2,7 @@
   <div>
       <div id="box">
         <div class="img-loading" v-show="imgLoading" :style="{backgroundPositionY:positionY}"></div>
-      <headerBox :title="title"></headerBox>
+        <headerBox :title="title"></headerBox>
         <div class="main mt40">
           <div class="bg-white" v-if="lists && userId">
             <a href="javascript:" class="bdb1 p10  df jcb" v-for="item in lists">
@@ -27,8 +27,8 @@
     </div>
   </div>
 </template>
-
 <script>
+  import $ from "jquery"
   import footerBox from "../components/footer.vue"
   import headerBox from "../components/header.vue"
 export default {
@@ -39,7 +39,22 @@ export default {
       isActive: 'order',
       imgLoading:true,
       positionY:0,
+      lists:"",
       userId:""
+    }
+  },
+  methods:{
+    lists2:function(){
+      var _this=this;
+      if(this.userId){
+          this.$http.get("/src/json/order.json",{
+            params:{userId:_this.userId}
+          }).then(function(result){
+            _this.lists=result.data;
+          }).catch(function(err){
+            console.log(err);
+          })
+      }
     }
   },
   components:{
@@ -47,29 +62,12 @@ export default {
       headerBox
   },
   computed:{
-    lists:function(){
-      var _this=this;
-      if(_this.userId){
-        function getData(url){
-          var a;
-          $.ajax({
-            url:url,
-            data:{userId:this.userId},
-            async:false, //此处ajax请求只能用同步，否则就会出问题
-            success:function(result){
-              a = result;
-            }
-          });
-          return a;
-        }
-        return getData("json/order.json");
-      }
-    }
   },
   created:function(){
     var userId=localStorage.getItem("userId");
     if(userId){
       this.userId=userId;
+      this.lists2();
     }
   },
   beforeCreate:function(){

@@ -23,6 +23,6 @@
   "current_address_id":0,
   "brand_member_new":0,
   "balance":28.235,
-  "avatar":"images/avatar.png",
+  "avatar":"/src/images/avatar.png",
   "__v":0
 }

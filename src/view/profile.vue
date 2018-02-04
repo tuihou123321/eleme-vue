@@ -8,37 +8,37 @@
             <div class="img-user fz30 bg-white ovf" v-if="!user.avatar">
               <i class="fa fa-user mt15" style="color:#dcdcdc;"></i>
             </div>
-            <img :src="user.avatar" alt="" class="img-user"  v-if="user.avatar">
+            <img :src="user.avatar" alt="" class="img-user"  v-else>
             <div class="profile-phone-center">
               <b class="fz18 b white" v-if="!user.username">登录/注册</b>
-              <b class="fz18 white" v-if="user.username">{{user.username}}</b>
+              <b class="fz18 white" v-else>{{user.username}}</b>
               <div class="fz16">
                 <i class="fa fa-phone"></i>
                 <span v-if="!user.mobile">暂无绑定手机号</span>
-                <span v-if="user.mobile">{{user.mobile}}</span>
+                <span v-else>{{user.mobile}}</span>
               </div>
             </div>
             <span class="fz12">
-                        <i class="fa fa-chevron-right"></i>
-                    </span>
+                <i class="fa fa-chevron-right"></i>
+            </span>
           </div>
         </router-link>
         <div class="profile-data mb10 tac">
           <router-link to="/balance/" class="profile-data-item">
             <span class="fz26 orange b" v-if="!user.balance">0.00</span>
-            <span class="fz26 orange b" v-if="user.balance">{{user.balance | money}}</span>
+            <span class="fz26 orange b" v-else>{{user.balance | money}}</span>
             元
             <p class="grey">我的余额</p>
           </router-link>
           <router-link to="/benefit/" class="profile-data-item">
             <span class="fz26 red b" v-if="!user.gift_amount">0</span>
-            <span class="fz26 red b" v-if="user.gift_amount">{{user.gift_amount}}</span>
+            <span class="fz26 red b" v-else>{{user.gift_amount}}</span>
             个
             <p class="grey">我的优惠</p>
           </router-link>
           <router-link to="/integral/" class="profile-data-item">
             <span class="fz26 green b" v-if="!user.point">0</span>
-            <span class="fz26 green b" v-if="user.point">{{user.point}}</span>
+            <span class="fz26 green b" v-else>{{user.point}}</span>
             分
             <p class="grey">我的积分</p>
           </router-link>
@@ -117,10 +117,15 @@ export default {
     var _this=this;
     var userId=localStorage.getItem("userId");
     if(userId){
-      this.$http.post("json/user.json",{"userId":userId},function(result){
-        _this.user=result;
-        _this.url="info.html";
-      });
+      this.$http.get("/src/json/user.json",{
+        params:
+          {
+            userId:userId
+          }
+      })
+      .then(function(result){
+        _this.user=result.data;
+      })
     }
   },
   filters: {
